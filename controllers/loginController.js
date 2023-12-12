@@ -42,17 +42,26 @@ exports.profile = async (req, res) => {
 exports.editUser = async (req,res) =>{
   try {
     const {username,email} = req.body;
-  if(!username||!email){
+    if(!username||!email){
       return res.status(400).json({
         msg:"Please fill all the fields"
       });
-  }
-  const query = "UPDATE tb_user SET username=? WHERE email=?";
-  db.query(query,[username,email],(err,result) =>{
+    }
+    const checkEmail = "SELECT * FROM tb_user WHERE email=?";
+    db.query(checkEmail,[email],(err,result) =>{
       if(err) throw err;
-      return res.status(201).json({msg:"User updated successfully"});
-  })
+      if(result.length === 0){
+        return res.status(400).json({
+          msg:"Email not found"
+        });
+      }
+      const query = "UPDATE tb_user SET username=? WHERE email=?";
+      db.query(query,[username,email],(err,result) =>{
+        if(err) throw err;
+        return res.status(201).json({msg:"User updated successfully"});
+      });
+    });
   } catch (error) {
-    console.log(error.massages);
+    console.log(error.messages);
   }
 }
