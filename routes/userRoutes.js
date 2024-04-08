@@ -1,13 +1,14 @@
 const router = require('express').Router();
-const {registerUser,getUser}= require('../controllers/registerController');
-const {loginUser,profile, editUser}= require('../controllers/loginController');
+const {getNamaMakanan}= require('../controllers/getNamaMakananControllers');
+const {getRecipe}= require('../controllers/getReciperController');
+const {getImage}= require('../controllers/getImageControllers');
 const {isAuthorized}= require('../middleware/auth');
+const { getFavorite } = require('../controllers/favoriteController');
 
-router.post('/register',registerUser);
-router.get('/user',getUser);
-router.post('/login',loginUser);   
-router.get('/profile',isAuthorized,profile);
-router.put('/edit',editUser);
+router.get('/Recipe',getRecipe);   
+router.get('/favorite',getFavorite);
+router.get('/namaMakanan', getNamaMakanan)
+router.get('/getImage', getImage);
 
 
 module.exports = router;
